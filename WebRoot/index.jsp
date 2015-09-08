@@ -74,7 +74,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<p>
 							<input type="submit" class="button" value="登录系统" />
 							<input type="button" class="button" onclick="location='regist.jsp'" value="没有账号，去注册&raquo;" />
-							
 						</p>
 					</form>
 				</div>

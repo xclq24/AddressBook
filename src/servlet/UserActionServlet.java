@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import util.StudentDAO;
 import util.UserDAO;
+import entity.Student;
 import entity.User;
 /**
  * 用户类行为Servlet类
@@ -58,14 +59,11 @@ public class UserActionServlet extends HttpServlet {
 				return;
 			}
 			
-			//查询用户所在班级号
-			String classid = StudentDAO.findClassidById(username);
-			//设置本次会话的当前用户和当前班级
+			//设置本次会话的当前用户
 			request.getSession().setAttribute("currentUser", user);
-			request.getSession().setAttribute("currentClass", classid);
 			
 			//至此登录成功，转到处理通讯录列表的Servlet
-			response.sendRedirect("list.studentaction");
+			response.sendRedirect("list.infoaction");
 
 		}else if("/regist".equals(action)){
 			/**
@@ -102,11 +100,33 @@ public class UserActionServlet extends HttpServlet {
 				return;
 			}
 			
+			//获得用户输入的学号，班级号，姓名，进行绑定
+			String id = request.getParameter("id");
+			String classid = request.getParameter("classid");
+			String name = request.getParameter("name");
+			Student student = StudentDAO.findById(id);
+			//如果学生对象为空，即学号不存在，则返回错误信息
+			if(student==null){
+				request.setAttribute("id_wrong_error", "学号不存在");
+				request.getRequestDispatcher("regist.jsp").forward(request, response);
+				return;
+			}
+			//如果班级号不匹配，或姓名不匹配，则返回错误信息
+			if(!student.getClassid().equals(classid) || !student.getName().equals(name)){
+				request.setAttribute("classid_or_name_wrong_error", "班级号或姓名错误");
+				request.getRequestDispatcher("regist.jsp").forward(request, response);
+				return;
+			}
+			
+			
 			//新建一个用户对象
 			User user = new User();
 			//设置用户名和密码
 			user.setUsername(username);
 			user.setPassword(password);
+			user.setId(id);
+			user.setClassid(classid);
+			user.setName(name);
 			//添加到数据库
 			UserDAO.add(user);
 			//至此注册成功，转到登陆界面
@@ -140,7 +160,6 @@ public class UserActionServlet extends HttpServlet {
 			UserDAO.updatePassword(user.getUsername(), newPassword);
 			//清除当前会话中保存的登陆用户信息，班级信息
 			request.getSession().removeAttribute("currentUser");
-			request.getSession().removeAttribute("currentClass");
 			//至此修改密码完成，需重新登陆，转到登陆界面
 			response.sendRedirect("index.jsp");
 			
@@ -150,7 +169,6 @@ public class UserActionServlet extends HttpServlet {
 			 */
 			//退出系统的时候，清除当前会话保存的信息
 			request.getSession().removeAttribute("currentUser");
-			request.getSession().removeAttribute("currentClass");
 			//转到登陆界面
 			response.sendRedirect("index.jsp");
 		}
