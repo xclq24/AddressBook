@@ -8,8 +8,8 @@
 		(<%=currentUser.getRole().equals("student")?"普通用户":"管理员"%>)&nbsp;
 		登录&nbsp;
 		<%if(currentUser.getRole().equals("student")){ %>
-		学号：&nbsp;<%=currentUser.getUsername() %>&nbsp;
-		班级：&nbsp;<%=currentUser.getClassid() %>&nbsp;
+		学号：<%=currentUser.getId() %>&nbsp;
+		班级：<%=currentUser.getClassid() %>&nbsp;
 		<%=ClassDAO.findNameById(currentUser.getClassid()) %>&nbsp;|&nbsp;
 		<%} %>
 		<a href="pwd.jsp">修改密码</a>&nbsp;|&nbsp;

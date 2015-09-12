@@ -42,8 +42,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<option value="name">姓名</option>
 								<option value="tel">联系方式</option>
 							</select>
-							&nbsp;&nbsp;查询&nbsp;&nbsp;<input type="text" class="inputgri" name="keywords" placeholder="输入关键字">
-							<input type="checkbox" name="fuzzyquery" value="fuzzyquery">模糊查询
+							&nbsp;&nbsp;查询&nbsp;&nbsp;
+							<input type="text" class="inputgri" name="keywords" placeholder="输入关键字">&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="checkbox" id="fuzzyquery" name="fuzzyquery" value="fuzzyquery">
+							<label for="fuzzyquery">模糊查询</label>&nbsp;&nbsp;&nbsp;&nbsp;
 							<input type="submit" value="查询">
 						</div>
 					</form>	
@@ -75,7 +77,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<td><%=info.getAddress() %></td>
 							<td><%=new SimpleDateFormat("yyyy-MM-dd").format(info.getBirthday()) %></td>
 							<td><%=info.getTel() %></td>
-							<td>
+							<td id="operation">
 								<%
 									boolean isAdmin = currentUser.getRole().equals("admin");
 									boolean isMe = currentUser.getId().equals(info.getId());

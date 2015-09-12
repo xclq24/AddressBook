@@ -7,8 +7,17 @@ import java.sql.SQLException;
 
 import entity.Student;
 import entity.User;
-
+/**
+ * 学生类的数据库操作类
+ * @author Jasper
+ *
+ */
 public class StudentDAO {
+	/**
+	 * 通过学号id找到学生
+	 * @param id 学号
+	 * @return 学生对象
+	 */
 	public static Student findById(String id){
 		Connection conn = null;
 		PreparedStatement ps = null;

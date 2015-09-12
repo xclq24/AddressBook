@@ -1,5 +1,6 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.Date;
 /**
  * 通讯录信息类
@@ -16,7 +17,7 @@ import java.util.Date;
  * @author Jasper
  *
  */
-public class Info {
+public class Info implements Serializable{
 	private String id;
 	private String classid;
 	private String name;

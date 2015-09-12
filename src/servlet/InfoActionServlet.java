@@ -27,9 +27,10 @@ public class InfoActionServlet extends HttpServlet {
 			/**
 			 * 显示通讯录列表
 			 */
-			//获得当前会话中保存的用户信息，通过班级号获得本班的所有通讯录信息
+			//获得当前会话中保存的用户信息
 			User currentUser = (User)request.getSession().getAttribute("currentUser");
 			List<Info> infoList = null;
+			//如果是管理员，则获得所有通讯录信息，否则，获得本班的所有通讯录信息
 			if(currentUser.getRole().equals("admin")){
 				infoList =InfoDAO.findAll();
 			}else{
@@ -46,7 +47,7 @@ public class InfoActionServlet extends HttpServlet {
 			 */
 			//获得请求中保存的学号
 			String id = request.getParameter("id");
-			//通过学号在数据库中删除一条学生信息
+			//通过学号在数据库中删除一条通讯录信息
 			InfoDAO.deleteById(id);
 			//删除完毕，请求重定向到处理通讯录列表的Servlet
 			response.sendRedirect("list.infoaction");
@@ -54,7 +55,7 @@ public class InfoActionServlet extends HttpServlet {
 			/**
 			 * 修改一条通讯录信息
 			 */
-			//获得请求中传递过来的信息，组装成一个学生对象（通过getInfo方法）
+			//获得请求中传递过来的信息，组装成一个通讯录信息对象（通过getInfo方法）
 			Info info = getInfo(request);
 			//依据学号，在数据库中更新一条通讯录记录
 			InfoDAO.updateById(info.getId(), info);
@@ -64,7 +65,7 @@ public class InfoActionServlet extends HttpServlet {
 			/**
 			 * 添加一条通讯录信息
 			 */
-			//如果该学生对象的学号已经存在数据库中，则添加失败，返回错误信息
+			//如果该通讯录信息对象的学号已经存在数据库中，则添加失败，返回错误信息
 			String id = request.getParameter("id");
 			if(InfoDAO.findById(id)!=null){
 				request.setAttribute("id_exist_wrong_error", "此学号信息已存在");
@@ -84,7 +85,7 @@ public class InfoActionServlet extends HttpServlet {
 				request.getRequestDispatcher("info_add.jsp").forward(request, response);
 				return;
 			}
-			//获得请求中传递过来的信息，组装成一个学生对象（通过getInfo方法）
+			//获得请求中传递过来的信息，组装成一个通讯录信息对象（通过getInfo方法）
 			Info info = getInfo(request);
 			//在数据库中添加一条通讯录记录
 			InfoDAO.add(info);
@@ -99,7 +100,7 @@ public class InfoActionServlet extends HttpServlet {
 			String keywords = request.getParameter("keywords");
 			String fuzzyquery = request.getParameter("fuzzyquery");
 			
-			//获得符合要求的所有本班的学生对象，添加到请求中
+			//获得符合要求的所有本班的通讯录信息对象，添加到请求中
 			User currentUser = (User)request.getSession().getAttribute("currentUser");
 			boolean isAdmin = currentUser.getRole().equals("admin");
 			boolean isFuzzy = "fuzzyquery".equals(fuzzyquery);
@@ -121,7 +122,7 @@ public class InfoActionServlet extends HttpServlet {
 	 * @return 通讯录信息对象
 	 */
 	public static Info getInfo(HttpServletRequest request){
-		//定义一个新的学生对象
+		//定义一个新的通讯录信息对象
 		Info info = new Info();
 		//设置各项属性
 		info.setId(request.getParameter("id"));

@@ -1,5 +1,6 @@
 package util;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +16,7 @@ import entity.Info;
  * @author Jasper
  *
  */
-public class InfoDAO {
+public class InfoDAO{
 	/**
 	 * 添加一条通讯录信息
 	 * @param info 一条信息对象
@@ -85,7 +86,7 @@ public class InfoDAO {
 	/**
 	 * 通过学号更新一条通讯录信息
 	 * @param id 学号
-	 * @param student 学生对象
+	 * @param info 通讯录信息
 	 * @return 是否成功修改
 	 */
 	public static boolean updateById(String id,Info info){
@@ -120,7 +121,7 @@ public class InfoDAO {
 		}
 	}
 	/**
-	 * 通过学号获得一个学生对象
+	 * 通过学号获得一个通讯录信息对象
 	 * @param id 学号
 	 * @return 通讯录信息对象
 	 */
@@ -435,6 +436,11 @@ public class InfoDAO {
 		}
 	}
 	
+	/**
+	 * 获得所给列表中，学生的籍贯在各省分布的人数
+	 * @param infoList 一个通讯录信息列表
+	 * @return 一个长为34的int数组
+	 */
 	public static int[] getProvinceDistribution(List<Info> infoList){
 		String[] provinces = {"北京","天津","上海","重庆","河北","河南","云南","辽宁","黑龙江","湖南","安徽","山东","新疆","江苏","浙江","江西","湖北","广西","甘肃","山西","内蒙古",
 				"陕西","吉林","福建","贵州","广东","青海","西藏","四川","宁夏","海南","台湾","香港","澳门"};

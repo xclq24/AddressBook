@@ -1,8 +1,10 @@
 package servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +25,7 @@ public class UserActionServlet extends HttpServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
+		response.setCharacterEncoding("utf-8");
 		
 		String uri = request.getRequestURI();
 		String action = uri.substring(uri.lastIndexOf("/"),uri.lastIndexOf("."));
@@ -127,10 +130,13 @@ public class UserActionServlet extends HttpServlet {
 			user.setId(id);
 			user.setClassid(classid);
 			user.setName(name);
+			user.setRole("student");
 			//添加到数据库
 			UserDAO.add(user);
 			//至此注册成功，转到登陆界面
-			response.sendRedirect("index.jsp");
+			PrintWriter out = response.getWriter();
+			out.print("<script>alert(\"注册成功\");location='index.jsp';</script>");
+			out.close();
 			
 		}else if("/modifyPassword".equals(action)){
 			/**
